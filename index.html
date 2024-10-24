@@ -24,12 +24,14 @@
       width: 100%;
       border-collapse: collapse;
       background-color: white; /* テーブルの背景は白 */
+      table-layout: fixed; /* 列の幅を均等に設定 */
     }
     
     th, td {
       border: 1px solid #ccc;
       padding: 10px;
       text-align: center;
+      width: 25%; /* 各列の幅を均等に割り当て */
     }
     
     th {
@@ -97,10 +99,10 @@
       <td>12:30</td><td></td><td>17:00</td><td></td>
     </tr>
     <tr>
-      <td>13:00</td><td class="highlight-red-text">18:00以降</td><td></td>
+      <td>13:00</td><td></td><td>18:00以降</td><td class="highlight-red-text"></td>
     </tr>
     <tr>
-      <td>13:30</td><td class="highlight-red large-text">直帰</td><td></td>
+      <td>13:30</td><td></td><td class="highlight-red large-text">直帰</td><td></td>
     </tr>
   </table>
 </div>
