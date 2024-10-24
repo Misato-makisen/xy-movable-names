@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XY座標で複数の要素を動かす - 背景に時間表</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+      position: relative;
+    }
+
+    #backgroundTable {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    table {
+      width: 60%;
+      border-collapse: collapse;
+      background-color: white;
+      opacity: 0.9;
+      pointer-events: none;
+      border: 2px solid black; /* 表全体の外枠 */
+    }
+
+    th, td {
+      border: 1px solid black; /* セルの境界線 */
+      padding: 10px;
+      text-align: center;
+      width: 25%;
+    }
+
+    th {
+      background-color: #e0ffff;
+      font-size: 14px;
+    }
+
+    td {
+      background-color: #fdd;
+    }
+
+    tr:nth-child(odd) td {
+      background-color: #f0f8ff;
+    }
+
+    .highlight-red {
+      background-color: red;
+      color: white;
+      font-weight: bold;
+      border: 2px solid black;
+    }
+
+    .highlight-red-text {
+      color: red;
+      font-weight: bold;
+    }
+
+    .large-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /* ドラッグ可能な要素のスタイル */
+    .movable {
+      width: 100px;
+      height: 50px;
+      background-color: lightblue;
+      position: absolute;
+      cursor: move;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    /* 各要素の初期位置 */
+    #katsumura {
+      top: 400px;
+      left: 50px;
+    }
+
+    #ohira {
+      top: 450px;
+      left: 150px;
+    }
+
+    #takizawa {
+      top: 500px;
+      left: 250px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- 背景に時間表を表示 -->
+  <div id="backgroundTable">
+    <table>
+      <tr>
+        <th>帰社予時刻</th>
+        <th></th>
+        <th>帰社予時刻</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td>9:30</td><td></td><td>14:00</td><td></td>
+      </tr>
+      <tr>
+        <td>10:00</td><td></td><td>14:30</td><td></td>
+      </tr>
+      <tr>
+        <td>10:30</td><td></td><td>15:00</td><td></td>
+      </tr>
+      <tr>
+        <td>11:00</td><td></td><td>15:30</td><td></td>
+      </tr>
+      <tr>
+        <td>11:30</td><td></td><td>16:00</td><td></td>
+      </tr>
+      <tr>
+        <td>12:00</td><td></td><td>16:30</td><td></td>
+      </tr>
+      <tr>
+        <td>12:30</td><td></td><td>17:00</td><td></td>
+      </tr>
+      <tr>
+        <td>13:00</td><td></td><td class="highlight-red-text">18:00以降</td><td></td>
+      </tr>
+      <tr>
+        <td>13:30</td><td></td><td class="highlight-red large-text">直帰</td><td></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 複数のドラッグ可能な要素 -->
+  <div id="katsumura" class="movable">勝村</div>
+  <div id="ohira" class="movable">大平</div>
+  <div id="takizawa" class="movable">滝澤</div>
+
+  <script>
+    // ドラッグ機能を有効にする関数
+    function makeMovable(element) {
+      let offsetX, offsetY, isDragging = false;
+
+      // 要素をクリックしたときの処理
+      element.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+      });
+
+      // マウスを動かしたときの処理
+      document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          element.style.left = `${e.clientX - offsetX}px`;
+          element.style.top = `${e.clientY - offsetY}px`;
+        }
+      });
+
+      // マウスボタンを離したときの処理
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+    }
+
+    // すべてのmovableクラスの要素に対してドラッグ機能を適用
+    const movables = document.querySelectorAll('.movable');
+    movables.forEach(makeMovable);
+  </script>
+
+</body>
+</html>
