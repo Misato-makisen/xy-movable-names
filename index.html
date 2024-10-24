@@ -18,6 +18,7 @@
       background-color: #e6f0ff;
       padding: 10px;
       border-radius: 8px;
+      box-sizing: border-box; /* パディングを含めた幅計算 */
     }
     
     table {
@@ -25,6 +26,7 @@
       border-collapse: collapse;
       background-color: white;
       table-layout: fixed;
+      box-sizing: border-box; /* パディングを含めた幅計算 */
     }
     
     th, td {
@@ -54,15 +56,25 @@
       position: absolute;
       cursor: move;
       box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      box-sizing: border-box; /* パディングを含めた幅計算 */
     }
-    
-    .highlight-red {
-      color: red;
-      font-weight: bold;
-    }
-    
-    .large-text {
-      font-size: 120%;
+
+    /* スマホ向けスタイル */
+    @media screen and (max-width: 600px) {
+      #backgroundTable {
+        max-width: 100%; /* 最大幅を設定 */
+        padding: 5px; /* スマホ画面ではパディングを小さく */
+      }
+
+      table {
+        font-size: 90%; /* スマホではフォントサイズを少し小さく */
+      }
+
+      .draggable {
+        width: 80px; /* ドラッグ要素も小さく */
+        height: 40px;
+        line-height: 40px;
+      }
     }
   </style>
 </head>
@@ -110,10 +122,10 @@
 <div id="names">
   <div class="draggable" id="person1">勝村</div>
   <div class="draggable" id="person2">佐藤</div>
-　<div class="draggable" id="person3">船田孝</div>
-　<div class="draggable" id="person4">滝澤</div>
-　<div class="draggable" id="person5">雨宮</div>
-　<div class="draggable" id="person2">小林</div>
+  <div class="draggable" id="person3">船田孝</div>
+  <div class="draggable" id="person4">滝澤</div>
+  <div class="draggable" id="person5">雨宮</div>
+  <div class="draggable" id="person2">小林</div>
 </div>
 
 <script>
