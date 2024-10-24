@@ -24,14 +24,12 @@
       width: 100%;
       border-collapse: collapse;
       background-color: white; /* テーブルの背景は白 */
-      table-layout: fixed; /* 列の幅を均等に設定 */
     }
     
     th, td {
       border: 1px solid #ccc;
       padding: 10px;
       text-align: center;
-      width: 25%; /* 各列の幅を均等に割り当て */
     }
     
     th {
@@ -72,9 +70,9 @@
 <div id="backgroundTable">
   <table>
     <tr>
-      <th>帰社予定時刻</th>
+      <th>帰社予時刻</th>
       <th></th>
-      <th>帰社予定時刻</th>
+      <th>帰社予時刻</th>
       <th></th>
     </tr>
     <tr>
@@ -99,10 +97,10 @@
       <td>12:30</td><td></td><td>17:00</td><td></td>
     </tr>
     <tr>
-      <td>13:00</td><td></td><td>18:00以降</td><td class="highlight-red-text"></td>
+      <td>13:00</td><td class="highlight-red-text">18:00以降</td><td></td>
     </tr>
     <tr>
-      <td>13:30</td><td></td><td class="highlight-red large-text">直帰</td><td></td>
+      <td>13:30</td><td class="highlight-red large-text">直帰</td><td></td>
     </tr>
   </table>
 </div>
@@ -118,6 +116,7 @@
 
   draggables.forEach(draggable => {
     draggable.addEventListener('mousedown', onMouseDown);
+    draggable.addEventListener('touchstart', onTouchStart);
 
     // ページ読み込み時に保存された位置を取得
     const savedPosition = JSON.parse(localStorage.getItem(draggable.id));
@@ -152,6 +151,40 @@
     target.onmouseup = function() {
       document.removeEventListener('mousemove', onMouseMove);
       target.onmouseup = null;
+
+      // 座標を保存
+      const position = { x: target.offsetLeft, y: target.offsetTop };
+      localStorage.setItem(target.id, JSON.stringify(position));
+    };
+  }
+
+  function onTouchStart(event) {
+    const target = event.target;
+    const touch = event.touches[0];
+    let shiftX = touch.clientX - target.getBoundingClientRect().left;
+    let shiftY = touch.clientY - target.getBoundingClientRect().top;
+
+    target.style.position = 'absolute';
+    target.style.zIndex = 1000;
+    document.body.append(target);
+
+    moveAt(touch.pageX, touch.pageY);
+
+    function moveAt(pageX, pageY) {
+      target.style.left = pageX - shiftX + 'px';
+      target.style.top = pageY - shiftY + 'px';
+    }
+
+    function onTouchMove(event) {
+      const touch = event.touches[0];
+      moveAt(touch.pageX, touch.pageY);
+    }
+
+    document.addEventListener('touchmove', onTouchMove);
+
+    target.ontouchend = function() {
+      document.removeEventListener('touchmove', onTouchMove);
+      target.ontouchend = null;
 
       // 座標を保存
       const position = { x: target.offsetLeft, y: target.offsetTop };
