@@ -5,36 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ドラッグして名前を移動</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+    
     #backgroundTable {
       position: relative;
       width: 100%;
       margin-bottom: 20px;
+      background-color: #e6f0ff; /* 柔らかい青色の背景 */
+      padding: 10px;
+      border-radius: 8px;
     }
+    
     table {
       width: 100%;
       border-collapse: collapse;
+      background-color: white; /* テーブルの背景は白 */
     }
-    table, th, td {
-      border: 1px solid black;
-    }
+    
     th, td {
+      border: 1px solid #ccc;
       padding: 10px;
       text-align: center;
     }
+    
+    th {
+      background-color: #d9eaff; /* 薄い青色のヘッダー */
+      font-weight: bold;
+    }
+    
+    td {
+      background-color: #f4f9ff; /* 薄い背景色を使って視認性を確保 */
+    }
+    
     .draggable {
       width: 100px;
       height: 50px;
-      background-color: #f0f0f0;
+      background-color: #ffd700; /* 柔らかい金色で目立ちすぎない */
       text-align: center;
       line-height: 50px;
-      border: 1px solid black;
+      border: 1px solid #999;
+      border-radius: 5px;
       position: absolute;
       cursor: move;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     }
+    
     .highlight-red {
       color: red;
       font-weight: bold;
     }
+    
     .large-text {
       font-size: 120%;
     }
