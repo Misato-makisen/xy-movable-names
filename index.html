@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XY座標で名前を動かす</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+    }
+
+    /* ドラッグ可能な要素のスタイル */
+    .movable {
+      width: 150px;
+      height: 50px;
+      background-color: lightblue;
+      position: absolute;
+      cursor: move;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ドラッグ可能な要素 -->
+  <div id="nameBox" class="movable">山田 太郎</div>
+
+  <script>
+    // ローカルストレージから位置情報を取得する
+    const nameBox = document.getElementById('nameBox');
+    let offsetX, offsetY, isDragging = false;
+
+    // 位置の初期設定
+    function setPosition(x, y) {
+      nameBox.style.left = `${x}px`;
+      nameBox.style.top = `${y}px`;
+    }
+
+    // ローカルストレージに保存された位置を取得
+    const savedX = localStorage.getItem('nameBoxX');
+    const savedY = localStorage.getItem('nameBoxY');
+
+    // 位置をセット（保存されていればその位置に）
+    if (savedX && savedY) {
+      setPosition(parseInt(savedX), parseInt(savedY));
+    } else {
+      // 初期位置を設定
+      setPosition(100, 100);
+    }
+
+    // 要素をクリックしたときの処理
+    nameBox.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      offsetX = e.clientX - nameBox.getBoundingClientRect().left;
+      offsetY = e.clientY - nameBox.getBoundingClientRect().top;
+    });
+
+    // マウスを動かしたときの処理
+    document.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+        setPosition(x, y);
+      }
+    });
+
+    // マウスボタンを離したときの処理
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        // 現在の位置をローカルストレージに保存
+        localStorage.setItem('nameBoxX', nameBox.style.left.replace('px', ''));
+        localStorage.setItem('nameBoxY', nameBox.style.top.replace('px', ''));
+      }
+    });
+  </script>
+
+</body>
+</html>
