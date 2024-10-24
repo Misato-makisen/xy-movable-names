@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ドラッグして名前を移動</title>
+  <title>スマホ対応の名前移動</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,7 +15,7 @@
       position: relative;
       width: 100%;
       margin-bottom: 20px;
-      background-color: #e6f0ff; /* 柔らかい青色の背景 */
+      background-color: #e6f0ff;
       padding: 10px;
       border-radius: 8px;
     }
@@ -23,28 +23,30 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      background-color: white; /* テーブルの背景は白 */
+      background-color: white;
+      table-layout: fixed;
     }
     
     th, td {
       border: 1px solid #ccc;
       padding: 10px;
       text-align: center;
+      width: 25%;
     }
     
     th {
-      background-color: #d9eaff; /* 薄い青色のヘッダー */
+      background-color: #d9eaff;
       font-weight: bold;
     }
     
     td {
-      background-color: #f4f9ff; /* 薄い背景色を使って視認性を確保 */
+      background-color: #f4f9ff;
     }
     
     .draggable {
       width: 100px;
       height: 50px;
-      background-color: #ffd700; /* 柔らかい金色で目立ちすぎない */
+      background-color: #ffd700;
       text-align: center;
       line-height: 50px;
       border: 1px solid #999;
@@ -97,10 +99,10 @@
       <td>12:30</td><td></td><td>17:00</td><td></td>
     </tr>
     <tr>
-      <td>13:00</td><td class="highlight-red-text">18:00以降</td><td></td>
+      <td>13:00</td><td></td><td>18:00以降</td><td class="highlight-red-text"></td>
     </tr>
     <tr>
-      <td>13:30</td><td class="highlight-red large-text">直帰</td><td></td>
+      <td>13:30</td><td></td><td class="highlight-red large-text">直帰</td><td></td>
     </tr>
   </table>
 </div>
@@ -115,9 +117,12 @@
   const draggables = document.querySelectorAll('.draggable');
 
   draggables.forEach(draggable => {
+    // マウスイベントを登録
     draggable.addEventListener('mousedown', onMouseDown);
+    
+    // タッチイベントを登録
     draggable.addEventListener('touchstart', onTouchStart);
-
+    
     // ページ読み込み時に保存された位置を取得
     const savedPosition = JSON.parse(localStorage.getItem(draggable.id));
     if (savedPosition) {
@@ -126,6 +131,7 @@
     }
   });
 
+  // マウスでドラッグする処理
   function onMouseDown(event) {
     const target = event.target;
     let shiftX = event.clientX - target.getBoundingClientRect().left;
@@ -158,6 +164,7 @@
     };
   }
 
+  // タッチ操作でドラッグする処理
   function onTouchStart(event) {
     const target = event.target;
     const touch = event.touches[0];
